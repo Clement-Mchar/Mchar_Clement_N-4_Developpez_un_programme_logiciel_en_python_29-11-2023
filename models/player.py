@@ -14,11 +14,15 @@ class Player:
 
     @first_name.setter
     def first_name(self, first_name):
+        self._validate_first_name(first_name)
+        self._first_name = first_name
+
+    @classmethod
+    def _validate_first_name(cls, first_name):
         if not first_name.isalpha():
             raise ValueError("Le prénom ne doit contenir que des lettres !")
-        if len(first_name) > 15 :
+        if len(first_name) > 15:
             raise ValueError("Le prénom est trop long !")
-        self._first_name = first_name
 
     @property
     def last_name(self):
@@ -26,11 +30,15 @@ class Player:
     
     @last_name.setter
     def last_name(self, last_name):
+        self._validate_last_name(last_name)
+        self._last_name = last_name
+
+    @classmethod
+    def _validate_last_name(cls, last_name):
         if not last_name.isalpha():
             raise ValueError("Le nom de famille ne doit contenir que des lettres !")
-        if len(last_name) > 20 :
+        if len(last_name) > 20:
             raise ValueError("Le nom de famille est trop long !")
-        self._last_name = last_name
     
     @property
     def birthdate(self):
@@ -39,7 +47,6 @@ class Player:
     @birthdate.setter
     def birthdate(self, birthdate):
         self._birthdate = self._validate_birthdate(birthdate)
-
 
     @classmethod
     def _validate_birthdate(cls, date_str):

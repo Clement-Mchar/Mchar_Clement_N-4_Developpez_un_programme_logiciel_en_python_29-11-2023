@@ -1,17 +1,18 @@
 class Tournament:
     
     def __init__(self, name, place, start_date, 
-                 end_date, number_of_players=8, number_of_rounds=4):
+                 end_date,  rounds, registered_players, notes, number_of_players=8, number_of_rounds=4,):
         
         self._name = name
         self._place = place
         self._start_date = start_date
         self._end_date = end_date
+
+        self._rounds = rounds
+        self._registered_players = registered_players
+        self._notes = notes
         self._number_of_players = number_of_players
         self._number_of_rounds = number_of_rounds
-        self._rounds = []
-        self._registered_players = []
-        self._notes = ""
 
     @property
     def name(self):
@@ -78,10 +79,18 @@ class Tournament:
     @property
     def rounds(self):
         return self._rounds
+    
+    @rounds.setter
+    def rounds(self, rounds):
+        self._rounds = rounds
 
     @property
     def registered_players(self):
         return self._registered_players
+    
+    @registered_players.setter
+    def registered_players(self, registered_players):
+        self._registered_players = registered_players
 
     @property
     def notes(self):
@@ -95,12 +104,18 @@ class Tournament:
         return {
             "name": self.name,
             "place": self.place,
-            "start date": str(self.start_date),
-            "end date":str(self.end_date),
-            "number of players": int(self.number_of_players),
-            "number of rounds":int(self.number_of_rounds),
-            "registered players": self.registered_players,
+            "start_date": str(self.start_date),
+            "end_date":str(self.end_date),
+            "number_of_players": int(self.number_of_players),
+            "number_of_rounds":int(self.number_of_rounds),
+            "registered_players": self.registered_players,
             "rounds": self.rounds,
             "notes": self.notes
 
         }
+    
+    def get_name(self):
+        return self.name
+
+    def get_registered_players(self):
+        return self.registered_players

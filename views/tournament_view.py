@@ -12,8 +12,7 @@ class TournamentView:
     
     @classmethod
     def display_players_registration(cls):
-        player_first_name = input("Entrez le prénom du joueur:")
-        player_last_name = input("Entrez le nom du joueur")
-        print("Joueur inscrit !")
+        player_first_name = input("Entrez le prénom du joueur: ")
+        player_last_name = input("Entrez le nom du joueur: ")
 
         return player_first_name, player_last_name

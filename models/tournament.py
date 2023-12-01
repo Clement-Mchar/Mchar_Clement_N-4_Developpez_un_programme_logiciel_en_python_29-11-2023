@@ -113,9 +113,3 @@ class Tournament:
             "notes": self.notes
 
         }
-    
-    def get_name(self):
-        return self.name
-
-    def get_registered_players(self):
-        return self.registered_players

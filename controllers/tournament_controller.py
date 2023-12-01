@@ -14,10 +14,15 @@ class TournamentController:
     def create_tournament():    
 
         tournament_info = TournamentView.display_tournament_creation()
+        existing_tournaments = DataManager(path="./data/tournaments.json")
+        tournaments = existing_tournaments.load_data_set()
+
 
         try:
+            tournament_number = len(tournaments) + 1
             defines_start_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-            tournament = Tournament(name=tournament_info[0], 
+            tournament = Tournament(number=tournament_number,
+                                    name=tournament_info[0], 
                                     place=tournament_info[1], 
                                     start_date=defines_start_date,
                                     end_date=None,
@@ -30,19 +35,21 @@ class TournamentController:
             players_infos = DataManager(path="./data/players.json")
             check_players = players_infos.load_data_set()
             
-            tournament_infos = DataManager(path="./data/tournaments.json")
-            tournaments = tournament_infos.load_data_set()
+           
+            existing_tournaments.save_data(tournament.to_dict())
             
             PlayerController.register_a_player(tournament, check_players, tournaments)
+
+            
                                 
-            tournament_infos.save_data(tournament.to_dict())
+            
        
 
         except ValueError as e :
             print(f"Erreur {e}")
             MainController.menu_controller()
             return None
-        return tournament
+        return tournaments, tournament
     
 
 

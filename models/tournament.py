@@ -1,18 +1,26 @@
 class Tournament:
     
-    def __init__(self, name, place, start_date, 
+    def __init__(self, number, name, place, start_date, 
                  end_date,  rounds, registered_players, notes, number_of_players=8, number_of_rounds=4,):
         
+        self._number = number
         self._name = name
         self._place = place
         self._start_date = start_date
         self._end_date = end_date
-
         self._rounds = rounds
         self._registered_players = registered_players
         self._notes = notes
         self._number_of_players = number_of_players
         self._number_of_rounds = number_of_rounds
+
+    @property
+    def number(self):
+        return self._number
+
+    @number.setter
+    def number(self, number):
+        self._number = number
 
     @property
     def name(self):
@@ -102,6 +110,7 @@ class Tournament:
 
     def to_dict(self):
         return {
+            "number": self.number,
             "name": self.name,
             "place": self.place,
             "start_date": str(self.start_date),

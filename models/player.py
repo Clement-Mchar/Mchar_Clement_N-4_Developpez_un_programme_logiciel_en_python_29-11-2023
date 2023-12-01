@@ -2,11 +2,20 @@ import datetime
 
 class Player:
 
-    def __init__(self, first_name, last_name, birthdate):
+    def __init__(self, number, first_name, last_name, birthdate):
+        self._number = number
         self._last_name = last_name
         self._first_name = first_name
         self._birthdate = birthdate
         self._score = None
+
+    @property
+    def number(self):
+        return self._number
+
+    @number.setter
+    def number(self, number):
+        self._number = number
     
     @property
     def first_name(self):
@@ -66,6 +75,7 @@ class Player:
 
     def to_dict(self):
         return {
+            "number": self.number,
             "first_name": self.first_name,
             "last_name": self.last_name,
             "birthdate": str(self._birthdate)

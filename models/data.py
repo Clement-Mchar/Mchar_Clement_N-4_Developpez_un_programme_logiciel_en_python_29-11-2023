@@ -22,3 +22,18 @@ class DataManager :
 
         with open(self.path, "w", encoding="utf8") as json_file:
             json.dump(current_data, json_file, indent=4, ensure_ascii=False)
+
+    @staticmethod
+    def load_program_state():
+
+        state_path = DataManager("./data/program_state.json")
+
+        state_path.load_data_set()
+    
+    @staticmethod
+    def save_program_state():
+
+        state_path = DataManager("./data/program_state.json")
+
+        state_path.save_data()
+    

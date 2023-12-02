@@ -7,7 +7,7 @@ class Player:
         self._last_name = last_name
         self._first_name = first_name
         self._birthdate = birthdate
-        self._score = None
+        self._score = 0
 
     @property
     def number(self):
@@ -51,7 +51,7 @@ class Player:
     
     @property
     def birthdate(self):
-        return self._birthdate.strftime("%d/%m/%Y")
+        return self._birthdate
     
     @birthdate.setter
     def birthdate(self, birthdate):
@@ -72,6 +72,9 @@ class Player:
     @score.setter
     def score(self, score):
         self._score = score
+    
+    def __str__(self):
+        return f"Player {self.number}: {self.first_name} {self.last_name}, Birthdate: {self.birthdate}, Score: {self.score}"
 
     def to_dict(self):
         return {

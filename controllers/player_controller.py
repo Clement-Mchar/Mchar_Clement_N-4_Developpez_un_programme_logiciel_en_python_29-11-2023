@@ -6,6 +6,7 @@ from models.data import DataManager
 from controllers.main_controller import MainController
 from views.tournament_view import TournamentView
 from views.main_view import MenuView
+from controllers.round_controller import RoundController
 
 class PlayerController:
     """Handles players creation"""
@@ -32,21 +33,22 @@ class PlayerController:
     
     """Handles players registering to the tournament"""
     @staticmethod
-    def register_a_player(tournament, check_players, tournaments):
+    def register_a_player():
+
+        registered_players = []
+
+        tournaments_infos = DataManager(path="./data/tournaments.json")
+        tournaments = tournaments_infos.load_data_set()
+        tournament = tournaments[-1]
         
         if tournament:
             players_infos = DataManager(path="./data/players.json")
             check_players = players_infos.load_data_set()
-            tournaments_infos = DataManager(path="./data/tournaments.json")
-            tournaments = tournaments_infos.load_data_set()
-            print(tournaments)
-            for existing_tournament in tournaments:
 
-                
-                print(existing_tournament)
+            for existing_tournament in tournaments:
                 existing_tournament_number = existing_tournament["number"]
         
-                if existing_tournament_number == tournament.number:
+                if existing_tournament_number == tournament["number"]:
 
                     for _ in range(existing_tournament["number_of_players"]) :
                         new_player_infos = TournamentView.display_players_registration()
@@ -56,25 +58,26 @@ class PlayerController:
                                                  player["last_name"] == last_name), None)
 
                         if existing_player:
-
                             player_found = True
-                            
                             existing_tournament["registered_players"].append(f"{first_name} {last_name}")
-                            
+                            existing_player_instance = Player(number=len(registered_players) + 1,
+                                                               first_name=first_name,
+                                                               last_name=last_name,
+                                                               birthdate=existing_player["birthdate"])
+                            registered_players.append(f"{existing_player_instance.first_name}, {existing_player_instance.last_name}, {existing_player_instance.score}")
 
                             if player_found:
                                 with open("./data/tournaments.json", "w", encoding="utf8") as json_file:
                                     json.dump(tournaments, json_file, indent=4, ensure_ascii=False)
-                                print("Joueur inscrit avec succès.")
-                                
+                                print("Joueur inscrit avec succès.")        
                         else:
                             print("Ce joueur n'est pas enregistré.")
                             choice = input("Annuler la création du tournoi ? [o/n]")
                             
-
                             if choice.lower() == "o":
                                 MenuView.display_main_menu()
                             else:
                                 TournamentView.display_players_registration()
-                                PlayerController.create_player()
+                                PlayerController.register_a_player()
                                 break
+        RoundController.create_round(registered_players)

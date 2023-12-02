@@ -1,4 +1,5 @@
 from views.main_view import MenuView
+from models.data import DataManager
 
 class MainController:
     """Handles the menu
@@ -22,5 +23,10 @@ class MainController:
                     MenuView.display_main_menu()
             except ValueError as e :
                 print(f"Erreur {e}")
+
+
+
+        
+
 
         

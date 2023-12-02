@@ -1,5 +1,6 @@
 import datetime
 
+
 class Player:
 
     def __init__(self, number, first_name, last_name, birthdate):
@@ -16,7 +17,7 @@ class Player:
     @number.setter
     def number(self, number):
         self._number = number
-    
+
     @property
     def first_name(self):
         return self._first_name
@@ -36,7 +37,7 @@ class Player:
     @property
     def last_name(self):
         return self._last_name
-    
+
     @last_name.setter
     def last_name(self, last_name):
         self._validate_last_name(last_name)
@@ -45,14 +46,14 @@ class Player:
     @classmethod
     def _validate_last_name(cls, last_name):
         if not last_name.isalpha():
-            raise ValueError("Le nom de famille ne doit contenir que des lettres !")
+            raise ValueError("Le nom ne doit contenir que des lettres !")
         if len(last_name) > 20:
-            raise ValueError("Le nom de famille est trop long !")
-    
+            raise ValueError("Le nom est trop long !")
+
     @property
     def birthdate(self):
         return self._birthdate
-    
+
     @birthdate.setter
     def birthdate(self, birthdate):
         self._birthdate = self._validate_birthdate(birthdate)
@@ -63,18 +64,22 @@ class Player:
             date_obj = datetime.datetime.strptime(date_str, "%d/%m/%Y")
             return date_obj
         except ValueError:
-            raise ValueError("Le format de la date de naissance doit être JJ/MM/AAAA.")
-        
+            raise ValueError("Format : ""JJ/MM/AAAA")
+
     @property
     def score(self):
         return self._score
-    
+
     @score.setter
     def score(self, score):
         self._score = score
-    
+
     def __str__(self):
-        return f"Player {self.number}: {self.first_name} {self.last_name}, Birthdate: {self.birthdate}, Score: {self.score}"
+        return [f"Player {self.number}: "
+                f"{self.first_name}"
+                f"{self.last_name}, Birthdate: "
+                f"{self.birthdate}, Score: "
+                f"{self.score}"]
 
     def to_dict(self):
         return {
@@ -83,4 +88,3 @@ class Player:
             "last_name": self.last_name,
             "birthdate": str(self._birthdate)
         }
-    

@@ -5,7 +5,6 @@ class Match:
         self._players = players
         self._result = None
 
-
     @property
     def name(self):
         return self._name
@@ -13,7 +12,7 @@ class Match:
     @name.setter
     def name(self, name):
         self._name = name
-    
+
     @property
     def players(self):
         return self._players

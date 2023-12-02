@@ -1,8 +1,9 @@
 from rich.console import Console
 
+
 class MenuView:
     """Display the main menu"""
-    
+
     console = Console()
 
     @classmethod
@@ -13,6 +14,6 @@ class MenuView:
         try:
             choice = input()
             return int(choice)
-        except ValueError as e:
-            print(f"Erreur: veuillez faire un choix valide")
+        except ValueError:
+            print("Erreur: veuillez faire un choix valide")
             return cls.display_main_menu()

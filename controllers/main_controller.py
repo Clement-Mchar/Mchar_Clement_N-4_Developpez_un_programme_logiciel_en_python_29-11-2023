@@ -1,5 +1,5 @@
 from views.main_view import MenuView
-from models.data import DataManager
+
 
 class MainController:
     """Handles the menu
@@ -18,15 +18,8 @@ class MainController:
                     PlayerController.create_player()
                 elif choice == 2:
                     TournamentController.create_tournament()
-                else :
-                    print ("Erreur : veuillez faire un choix valide.")
+                else:
+                    print("Erreur : veuillez faire un choix valide.")
                     MenuView.display_main_menu()
-            except ValueError as e :
+            except ValueError as e:
                 print(f"Erreur {e}")
-
-
-
-        
-
-
-        

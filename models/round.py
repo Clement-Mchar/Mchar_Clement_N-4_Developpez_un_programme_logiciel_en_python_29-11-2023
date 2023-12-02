@@ -7,7 +7,7 @@ class Round:
     @property
     def number(self):
         return self._number
-    
+
     @number.setter
     def number(self, number):
         self._number = number
@@ -29,5 +29,4 @@ class Round:
             "number": self.number,
             "name": self.name,
             "matches": self.matches
-
         }

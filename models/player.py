@@ -3,12 +3,18 @@ import datetime
 
 class Player:
 
-    def __init__(self, number, first_name, last_name, birthdate):
+    def __init__(self,
+        number,
+        first_name,
+        last_name,
+        birthdate,
+    ):
+
         self._number = number
         self._last_name = last_name
         self._first_name = first_name
         self._birthdate = birthdate
-        self._score = 0
+        self._score = None
 
     @property
     def number(self):
@@ -75,11 +81,12 @@ class Player:
         self._score = score
 
     def __str__(self):
-        return [f"Player {self.number}: "
-                f"{self.first_name}"
-                f"{self.last_name}, Birthdate: "
-                f"{self.birthdate}, Score: "
-                f"{self.score}"]
+        return [
+            f"Player {self.number}: "
+            f"{self.first_name}"
+            f"{self.last_name}, Birthdate: "
+            f"{self.birthdate}"
+        ]
 
     def to_dict(self):
         return {

@@ -17,22 +17,23 @@ class TournamentController:
         tournament_info = TournamentView.display_tournament_creation()
         existing_tournaments = DataManager(path="./data/tournaments.json")
         tournaments = existing_tournaments.load_data_set()
-
+        players = []
+        rounds = []
         try:
             tournament_number = len(tournaments) + 1
             start_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
             tournament = Tournament(
-                                    number=tournament_number,
-                                    name=tournament_info[0],
-                                    place=tournament_info[1],
-                                    start_date=start_date,
-                                    end_date=None,
-                                    rounds=[],
-                                    players=[],
-                                    notes=tournament_info[4],
-                                    number_of_players=tournament_info[2],
-                                    number_of_rounds=tournament_info[3]
-                                    )
+                number=tournament_number,
+                name=tournament_info[0],
+                place=tournament_info[1],
+                start_date=start_date,
+                end_date=None,
+                rounds=rounds,
+                players=players,
+                notes=tournament_info[4],
+                number_of_players=tournament_info[2],
+                number_of_rounds=tournament_info[3]
+            )
 
             existing_tournaments.save_data(tournament.to_dict())
 
@@ -42,7 +43,7 @@ class TournamentController:
             f"Tournoi_N°{tournament.number}_{tournament.name}/"
             os.makedirs(tournament_folder_path, exist_ok=True)
 
-            PlayerController.registered_players()
+            PlayerController.registered_players(players, rounds)
 
         except ValueError as e:
             print(f"Erreur {e}")

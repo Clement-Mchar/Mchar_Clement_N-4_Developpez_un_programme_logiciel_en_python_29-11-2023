@@ -1,9 +1,19 @@
 class Match:
 
-    def __init__(self, name, players):
+    def __init__(self, number, name, player_1, player_2):
+        self._number = number
         self._name = name
-        self._players = players
+        self._player_1 = player_1
+        self._player_2 = player_2
         self._result = None
+
+    @property
+    def number(self):
+        return self._number
+
+    @number.setter
+    def number(self, number):
+        self._number = number
 
     @property
     def name(self):
@@ -14,12 +24,19 @@ class Match:
         self._name = name
 
     @property
-    def players(self):
-        return self._players
+    def player_1(self):
+        return self._player_1
 
-    @players.setter
-    def players(self, players):
-        self._players = players
+    @player_1.setter
+    def player_1(self, player_1):
+        self._player_1 = player_1
+    @property
+    def player_2(self):
+        return self._player_2
+
+    @player_2.setter
+    def player_2(self, player_2):
+        self._player_2 = player_2
 
     @property
     def result(self):
@@ -28,3 +45,11 @@ class Match:
     @result.setter
     def result(self, result):
         self._result = result
+
+    def to_dict(self):
+        return {
+            "number": self.number,
+            "name": self.name,
+            "player_1": self.player_1,
+            "player_2": self.player_2,
+            }

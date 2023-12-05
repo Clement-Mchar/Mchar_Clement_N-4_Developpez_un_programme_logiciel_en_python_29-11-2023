@@ -23,6 +23,10 @@ class Round:
     @property
     def matches(self):
         return self._matches
+    
+    @matches.setter
+    def matches(self, matches):
+        self._matches = matches
 
     def to_dict(self):
         return {

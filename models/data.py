@@ -43,3 +43,10 @@ class DataManager:
         path = "./data/tournaments.json"
         with open(path, "w", encoding="utf8")as json_file:
             json.dump(data, json_file, indent=4, ensure_ascii=False)
+
+
+
+
+
+    
+    

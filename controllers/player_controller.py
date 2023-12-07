@@ -26,7 +26,8 @@ class PlayerController:
                 last_name=player_infos[1],
                 birthdate=player_infos[2]
             )
-
+            player._validate_first_name(first_name=player_infos[0])
+            player._validate_last_name(last_name=player_infos[1])
             player._validate_birthdate(date_str=player_infos[2])
             save_player = DataManager(path="./data/players.json")
             save_player.save_data(player.to_dict())
@@ -62,44 +63,46 @@ class PlayerController:
         tournaments,
         rounds
     ):
-        while True:
-            for _ in range(existing_tournament["number_of_players"]):
-                player_infos = TournamentView.display_players_registration()
-                players_list = DataManager(path="./data/players.json")
-                existing_players = players_list.load_data_set()
-                first_name, last_name = player_infos
-                existing_player = next((player for player in existing_players if
-                                        player["first_name"] == first_name and
-                                        player["last_name"] == last_name),
-                                        None
-                                    )
 
-                if existing_player:
-                    existing_tournament["players"].append(
-                        f"{first_name} "
-                        f"{last_name}"
-                    )
-
-                    player_instance = Player(
-                        number=len(players) + 1,
-                        first_name=first_name,
-                        last_name=last_name,
-                        birthdate=existing_player["birthdate"]
-                    )
-
-                    players.append(
-                        f"{player_instance.first_name} "
-                        f"{player_instance.last_name}"
-                    )
-                    DataManager.update_tournament(tournaments)
-                    print("Joueur inscrit avec succès.")
-                else:
-                    print("Ce joueur n'est pas enregistré.")
-                    choice = input(
-                        "Annuler la création du tournoi ? [o/n]"
-                    )
-
-                    if choice.lower() == "o":
-                        MenuView.display_main_menu()
-            break
+        while len(existing_tournament["players"]) < existing_tournament["number_of_players"]:
+            player_infos = TournamentView.display_players_registration()
+            players_list = DataManager(path="./data/players.json")
+            existing_players = players_list.load_data_set()
+            first_name, last_name = player_infos
+            existing_player = next((player for player in existing_players if
+                                    player["first_name"] == first_name and
+                                    player["last_name"] == last_name),
+                                    None
+                                )
+            if existing_player:
+                existing_tournament["players"].append(
+                    f"{first_name} "
+                    f"{last_name}"
+                )
+                player_instance = Player(
+                    number=len(players) + 1,
+                    first_name=first_name,
+                    last_name=last_name,
+                    birthdate=existing_player["birthdate"]
+                )
+                player_instance.score = 0
+                new_player_name = f"{player_instance.first_name} {player_instance.last_name}"
+                new_player = {
+                    "player": new_player_name,
+                    "score": player_instance.score
+                }
+                
+                players.append(new_player)
+                
+                DataManager.update_tournament(tournaments)
+                print("Joueur inscrit avec succès.")
+            else:
+                print("Ce joueur n'est pas enregistré.")
+                choice = input(
+                    "Annuler la création du tournoi ? [o/n]"
+                )
+                if choice.lower() == "o":
+                    MenuView.display_main_menu()
+                    break
+                
         RoundController.create_round(players, rounds)

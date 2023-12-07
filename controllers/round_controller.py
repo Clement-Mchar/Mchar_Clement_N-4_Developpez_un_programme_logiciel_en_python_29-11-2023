@@ -22,22 +22,20 @@ class RoundController:
                 name=f"Round {round_number}",
                 matches=matches
             )
+            if round_number == 1 :
+                players_list = sorted(players, key=lambda x: (x["player"]))
+            else :
+                players_list = sorted(players, key=lambda x: (x["score"]))
 
-            players_list = sorted(players)
             random.shuffle(players_list)
-
-
-            rounds_path = DataManager(
-            f"./tournaments/Tournoi_N°{tournament['number']}_"
-            f"{tournament['name']}/{new_round.name}.json"
-            )
-            
-
             rounds.append(new_round.name)
-            rounds_path.save_data(new_round.to_dict())
             tournament["rounds"].append(new_round.name)
             DataManager.update_tournament(tournaments)
-            MatchController.match_handler(new_round, players_list, matches)
+            MatchController.create_match(
+                new_round,
+                players_list,
+                matches,
+            )
  
             
         

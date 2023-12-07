@@ -35,6 +35,11 @@ class TournamentController:
                 number_of_rounds=tournament_info[3]
             )
 
+            tournament._validate_name(name=tournament_info[0])
+            tournament._validate_place(place=tournament_info[1])
+            tournament._validate_number_of_players(number_of_players=tournament_info[2])
+            tournament._validate_number_of_rounds(number_of_rounds=tournament_info[3])
+
             existing_tournaments.save_data(tournament.to_dict())
 
             main_folder_path = "./tournaments/"
@@ -48,5 +53,3 @@ class TournamentController:
         except ValueError as e:
             print(f"Erreur {e}")
             MainController.menu_controller()
-            return None
-        return tournaments, tournament

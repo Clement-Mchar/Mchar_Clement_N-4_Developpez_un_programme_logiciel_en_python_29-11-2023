@@ -1,11 +1,11 @@
 class Match:
 
-    def __init__(self, number, name, player_1, player_2):
+    def __init__(self, number, name, player_1, player_2, result):
         self._number = number
         self._name = name
         self._player_1 = player_1
         self._player_2 = player_2
-        self._result = None
+        self._result = result
 
     @property
     def number(self):
@@ -52,4 +52,5 @@ class Match:
             "name": self.name,
             "player_1": self.player_1,
             "player_2": self.player_2,
+            "result": self.result
             }

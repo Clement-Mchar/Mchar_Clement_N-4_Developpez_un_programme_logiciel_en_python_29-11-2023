@@ -81,12 +81,7 @@ class Player:
         self._score = score
 
     def __str__(self):
-        return [
-            f"Player {self.number}: "
-            f"{self.first_name}"
-            f"{self.last_name}, Birthdate: "
-            f"{self.birthdate}"
-        ]
+        return f"name: {self.first_name} {self.last_name}, score: {self.score}"
 
     def to_dict(self):
         return {

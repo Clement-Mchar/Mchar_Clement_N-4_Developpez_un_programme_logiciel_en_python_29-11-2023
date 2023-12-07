@@ -10,7 +10,7 @@ class Tournament:
                 rounds,
                 players,
                 notes,
-                number_of_players=8,
+                number_of_players,
                 number_of_rounds=4):
 
         self._number = number
@@ -38,9 +38,12 @@ class Tournament:
 
     @name.setter
     def name(self, name):
+        self._name = self._validate_name(name)
+    
+    @classmethod
+    def _validate_name(cls, name):
         if len(name) > 30:
             raise ValueError("le nom du tournoi est trop long")
-        self._name = name
 
     @property
     def place(self):
@@ -48,9 +51,12 @@ class Tournament:
 
     @place.setter
     def place(self, place):
+        self._place = self._validate_place(place)
+
+    @classmethod
+    def _validate_place(cls, place):
         if len(place) > 40:
             raise ValueError("Le nom du lieu est trop long !")
-        self._place = place
 
     @property
     def start_date(self):
@@ -74,25 +80,31 @@ class Tournament:
 
     @number_of_players.setter
     def number_of_players(self, number_of_players):
+        self._number_of_players = self._validate_number_of_players(number_of_players)
+    
+    @classmethod
+    def _validate_number_of_players(cls, number_of_players):
         if not isinstance(number_of_players, int):
             raise ValueError("Le nombre de rounds doit être un entier.")
         if not (2 <= number_of_players <= 64):
             raise ValueError("Minimum 2 joueurs, maximum 10 joueurs.")
         if not (number_of_players % 2 == 0):
             raise ValueError("Le nombre de joueurs doit être pair !")
-        self._number_of_players = number_of_players
 
     @property
     def number_of_rounds(self):
         return self._number_of_rounds
-
+    
     @number_of_rounds.setter
     def number_of_rounds(self, number_of_rounds):
+        self._number_of_rounds = self._validate_number_of_rounds(number_of_rounds)
+
+    @classmethod
+    def _validate_number_of_rounds(cls, number_of_rounds):
         if not isinstance(number_of_rounds, int):
             raise ValueError("Le nombre de rounds doit être un entier.")
         if not (2 <= number_of_rounds <= 10):
             raise ValueError("Minimum 2 rounds, maximum 10 rounds.")
-        self._number_of_rounds = number_of_rounds
 
     @property
     def rounds(self):

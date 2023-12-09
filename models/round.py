@@ -1,16 +1,16 @@
 class Round:
-    def __init__(self, number, name=None, matches=None):
-        self._number = number
+    def __init__(self, id, name=None, matches=None):
+        self._id = id
         self._matches = matches if matches else []
         self._name = name
 
     @property
-    def number(self):
-        return self._number
+    def id(self):
+        return self._id
 
-    @number.setter
-    def number(self, number):
-        self._number = number
+    @id.setter
+    def id(self, id):
+        self._id = id
 
     @property
     def name(self):
@@ -30,7 +30,7 @@ class Round:
 
     def to_dict(self):
         return {
-            "number": self.number,
+            "id": self.id,
             "name": self.name,
             "matches": self.matches
         }

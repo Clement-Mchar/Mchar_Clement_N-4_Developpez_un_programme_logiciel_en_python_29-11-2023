@@ -2,7 +2,7 @@ class Tournament:
 
     def __init__(
                 self,
-                number,
+                id,
                 name,
                 place,
                 start_date,
@@ -13,7 +13,7 @@ class Tournament:
                 number_of_players,
                 number_of_rounds=4):
 
-        self._number = number
+        self._id = id
         self._name = name
         self._place = place
         self._start_date = start_date
@@ -25,12 +25,12 @@ class Tournament:
         self._number_of_rounds = number_of_rounds
 
     @property
-    def number(self):
-        return self._number
+    def id(self):
+        return self._id
 
-    @number.setter
-    def number(self, number):
-        self._number = number
+    @id.setter
+    def id(self, id):
+        self._id = id
 
     @property
     def name(self):
@@ -132,7 +132,7 @@ class Tournament:
 
     def to_dict(self):
         return {
-            "number": self.number,
+            "id": self.id,
             "name": self.name,
             "place": self.place,
             "start_date": str(self.start_date),

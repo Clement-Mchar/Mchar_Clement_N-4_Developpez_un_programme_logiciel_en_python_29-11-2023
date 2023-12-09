@@ -5,7 +5,7 @@ class RoundView:
     @classmethod
     def display_round_view(cls, new_round, displayed_matches):
         console = Console()
-        console.print(f"[bold]Round N°{new_round.number} :[/bold]")
+        console.print(f"[bold]{new_round.name} :[/bold]")
 
         for displayed_match in displayed_matches:
             match_row = f"{displayed_match[0]} {displayed_match[1]} contre {displayed_match[2]}"

@@ -39,7 +39,8 @@ class DataManager:
         state_path.save_data()
 
     @staticmethod
-    def update_tournament(data):
+    def update_tournaments(data):
+
         path = "./data/tournaments.json"
         with open(path, "w", encoding="utf8")as json_file:
             json.dump(data, json_file, indent=4, ensure_ascii=False)

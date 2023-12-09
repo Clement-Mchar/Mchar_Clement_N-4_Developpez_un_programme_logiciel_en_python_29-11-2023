@@ -18,9 +18,10 @@ class TournamentView:
                 ]
 
     @classmethod
-    def display_players_registration(cls):
+    def display_players_registration(cls, existing_players):
 
-        player_first_name = input("Entrez le prénom du joueur : ")
-        player_last_name = input("Entrez le nom du joueur : ")
+        print(existing_players)
 
-        return player_first_name, player_last_name
+        player_id = int(input("Entrez l'id du joueur à inscrire au tournoi: "))
+
+        return player_id

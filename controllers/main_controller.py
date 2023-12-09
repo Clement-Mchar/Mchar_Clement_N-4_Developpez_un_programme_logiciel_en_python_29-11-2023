@@ -1,4 +1,5 @@
 from views.main_view import MenuView
+from models.data import DataManager
 
 
 class MainController:
@@ -7,7 +8,6 @@ class MainController:
 
     @staticmethod
     def menu_controller():
-
         from controllers.player_controller import PlayerController
         from controllers.tournament_controller import TournamentController
 

@@ -75,11 +75,11 @@ class MatchController :
                 player_2_result = int(player_2_result_float) if player_2_result_float.is_integer() else player_2_result_float
 
                 if player_1_result == 1 and player_2_result != 0:
-                    raise ValueError("Si le joueur 1 gagne (score 1), le joueur 2 doit avoir un score de 0.")
+                    raise ValueError("Si le joueur 1 gagne, le joueur 2 doit avoir un score de 0.")
                 elif player_1_result == 0 and player_2_result != 1:
-                    raise ValueError("Si le joueur 1 perd (score 0), le joueur 2 doit avoir un score de 1.")
+                    raise ValueError("Si le joueur 1 perd, le joueur 2 doit avoir un score de 1.")
                 elif player_1_result == 0.5 and player_2_result != 0.5:
-                    raise ValueError("Si le joueur 1 fait match nul (score 0.5), le joueur 2 doit aussi avoir un score de 0.5.")
+                    raise ValueError("Si le joueur 1 fait match nul, le joueur 2 doit aussi avoir un score de 0.5.")
                 
                 if player_1_result == 1:
                     new_round.matches[-1]['player_1'][2] += 1

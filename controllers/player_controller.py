@@ -56,7 +56,6 @@ class PlayerController:
                 player_id = TournamentView.display_players_registration(
                     existing_players
                 )
-                print(players)
 
                 existing_player = next(
                     (player for player in players if
@@ -66,14 +65,13 @@ class PlayerController:
                 if existing_player:
                     player_instance = Player(
                         id=player_id,
-                        first_name=existing_player["id"],
+                        first_name=existing_player["first_name"],
                         last_name=existing_player["last_name"],
                         birthdate=existing_player["birthdate"]
                     )
-                    print(player_instance)
                     player_instance.score = 0
                     tournament.players.append(f"{player_instance.id}")
-                    registered_players.append(player_instance)
+                    registered_players.append([player_instance.first_name, player_instance.last_name, player_instance.score])
                     DataManager.update_tournaments(tournaments)
                     print("Joueur inscrit avec succès.")
                 else:

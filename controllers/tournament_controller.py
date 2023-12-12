@@ -18,9 +18,7 @@ class TournamentController:
         tournaments_path = DataManager("./data/tournaments.json")
         tournaments = tournaments_path.load_data_set()
         tournament_info = TournamentView.display_tournament_creation()
-        rounds_path = DataManager("./data/rounds.json")
-        rounds = rounds_path.load_data_set()
-
+        
         try:
             tournament_id = len(tournaments) + 1
             start_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")

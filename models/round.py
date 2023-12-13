@@ -1,8 +1,10 @@
 class Round:
-    def __init__(self, id, name=None, matches=None):
+    def __init__(self, id, start_date, end_date, name, matches):
         self._id = id
         self._matches = matches if matches else []
         self._name = name
+        self._start_date = start_date
+        self._end_date = end_date
 
     @property
     def id(self):
@@ -11,6 +13,22 @@ class Round:
     @id.setter
     def id(self, id):
         self._id = id
+
+    @property
+    def start_date(self):
+        return self._start_date
+
+    @start_date.setter
+    def start_date(self, start_date):
+        self._start_date = start_date
+
+    @property
+    def end_date(self):
+        return self._end_date
+
+    @end_date.setter
+    def end_date(self, end_date):
+        self._end_date = end_date
 
     @property
     def name(self):
@@ -23,7 +41,7 @@ class Round:
     @property
     def matches(self):
         return self._matches
-    
+
     @matches.setter
     def matches(self, matches):
         self._matches = matches
@@ -31,6 +49,8 @@ class Round:
     def to_dict(self):
         return {
             "id": self.id,
+            "start_date": str(self.start_date),
+            "end_date": str(self.end_date),
             "name": self.name,
             "matches": self.matches
         }

@@ -3,7 +3,8 @@ import datetime
 
 class Player:
 
-    def __init__(self,
+    def __init__(
+        self,
         id,
         first_name,
         last_name,

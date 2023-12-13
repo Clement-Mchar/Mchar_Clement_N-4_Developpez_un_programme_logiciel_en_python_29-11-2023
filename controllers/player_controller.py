@@ -10,7 +10,6 @@ from controllers.round_controller import RoundController
 class PlayerController:
 
     """Handles players creation"""
-
     @staticmethod
     def create_player():
 
@@ -37,15 +36,16 @@ class PlayerController:
 
     """Handles players registering to the tournament"""
     @staticmethod
-    def register_a_player(tournaments, tournament
-    ):  
-        
+    def register_a_player(
+        tournaments,
+        tournament
+    ):
+
         registered_players = []
         while len(tournament.players) < tournament.number_of_players:
             try:
-
                 players_list = DataManager("./data/players.json")
-                players =players_list.load_data_set()
+                players = players_list.load_data_set()
                 existing_players = []
                 for player in players:
 
@@ -58,22 +58,34 @@ class PlayerController:
                 )
 
                 existing_player = next(
-                    (player for player in players if
-                    player["id"] == player_id
-                    ), None
+                    (
+                        player for player in players if
+                        player["id"] == player_id
+                    ),
+                    None
                 )
                 if existing_player:
-                    player_instance = Player(
-                        id=player_id,
-                        first_name=existing_player["first_name"],
-                        last_name=existing_player["last_name"],
-                        birthdate=existing_player["birthdate"]
-                    )
-                    player_instance.score = 0
-                    tournament.players.append(f"{player_instance.id}")
-                    registered_players.append([player_instance.first_name, player_instance.last_name, player_instance.score])
-                    DataManager.update_tournaments(tournaments)
-                    print("Joueur inscrit avec succès.")
+                    if int(player_id) not in tournament.players:
+                        player_instance = Player(
+                            id=int(player_id),
+                            first_name=existing_player["first_name"],
+                            last_name=existing_player["last_name"],
+                            birthdate=existing_player["birthdate"]
+                        )
+                        player_instance.score = 0
+                        tournament.players.append(player_instance.id)
+                        registered_players.append(
+                            [
+                                player_instance.first_name,
+                                player_instance.last_name,
+                                player_instance.score,
+                            ]
+                        )
+                        DataManager.update_tournaments(tournaments)
+                        print("Joueur inscrit avec succès.")
+                    else:
+                        print("Ce joueur est déjà inscrit, rééssayez.")
+
                 else:
                     print("Ce joueur n'est pas enregistré.")
                     choice = input(
@@ -84,5 +96,8 @@ class PlayerController:
             except ValueError as e:
                 print(f"Erreur: {e}")
                 MainController.menu_controller()
-        RoundController.create_round(tournaments, tournament, registered_players)
-
+        RoundController.create_round(
+            tournaments,
+            tournament,
+            registered_players
+        )

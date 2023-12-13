@@ -1,5 +1,4 @@
 from views.main_view import MenuView
-from models.data import DataManager
 
 
 class MainController:

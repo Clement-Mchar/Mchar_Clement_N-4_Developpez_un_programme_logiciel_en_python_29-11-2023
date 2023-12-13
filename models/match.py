@@ -30,6 +30,7 @@ class Match:
     @player_1.setter
     def player_1(self, player_1):
         self._player_1 = player_1
+
     @property
     def player_2(self):
         return self._player_2
@@ -53,4 +54,4 @@ class Match:
             "player_1": self.player_1,
             "player_2": self.player_2,
             "result": self.result
-            }
+        }

@@ -39,7 +39,7 @@ class Tournament:
     @name.setter
     def name(self, name):
         self._name = self._validate_name(name)
-    
+
     @classmethod
     def _validate_name(cls, name):
         if len(name) > 30:
@@ -80,8 +80,10 @@ class Tournament:
 
     @number_of_players.setter
     def number_of_players(self, number_of_players):
-        self._number_of_players = self._validate_number_of_players(number_of_players)
-    
+        self._number_of_players = self._validate_number_of_players(
+            number_of_players
+        )
+
     @classmethod
     def _validate_number_of_players(cls, number_of_players):
         if not isinstance(number_of_players, int):
@@ -94,10 +96,12 @@ class Tournament:
     @property
     def number_of_rounds(self):
         return self._number_of_rounds
-    
+
     @number_of_rounds.setter
     def number_of_rounds(self, number_of_rounds):
-        self._number_of_rounds = self._validate_number_of_rounds(number_of_rounds)
+        self._number_of_rounds = self._validate_number_of_rounds(
+            number_of_rounds
+        )
 
     @classmethod
     def _validate_number_of_rounds(cls, number_of_rounds):

@@ -76,6 +76,7 @@ class PlayerController:
                         tournament.players.append(player_instance.id)
                         registered_players.append(
                             [
+                                player_instance.id,
                                 player_instance.first_name,
                                 player_instance.last_name,
                                 player_instance.score,

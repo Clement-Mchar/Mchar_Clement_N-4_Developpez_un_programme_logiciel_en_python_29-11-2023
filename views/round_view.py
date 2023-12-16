@@ -4,21 +4,24 @@ from rich.console import Console
 class RoundView:
 
     @classmethod
-    def display_round_view(cls, new_round, displayed_matches):
-        console = Console()
+    def display_round_view(cls, new_round, matches):
 
+        console = Console()
         console.print(f"[bold]{new_round.name} :[/bold]")
-        for displayed_match in displayed_matches:
-            new_match = f"{displayed_match[1]} contre {displayed_match[2]}"
-            match_row = f"{displayed_match[0]}: {new_match}"
+
+        for match in matches:
+            player_1_name = f"{match.player_1[1]} {match.player_1[2]}"
+            player_2_name = f"{match.player_2[1]} {match.player_2[2]}"
+            match_row = f"{match.name}: {player_1_name} contre {player_2_name}"
             console.print(match_row)
+        console.input("Appuyez sur entrée pour commencer le round.")
 
     @classmethod
     def enter_match_result(cls, match):
         console = Console()
-
-        player_1_name = f"{match.player_1[0]} {match.player_1[1]}"
-        player_2_name = f"{match.player_2[0]} {match.player_2[1]}"
+        player_1_name = f"{match.player_1[1]} {match.player_1[2]}"
+        player_2_name = f"{match.player_2[1]} {match.player_2[2]}"
+        console.print(f"{match.name}: {player_1_name} contre {player_2_name}")
         player_1_result = console.input(
             f"Entrez le résultat de {player_1_name}: "
         )

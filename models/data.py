@@ -51,3 +51,10 @@ class DataManager:
         path = "./data/rounds.json"
         with open(path, "w", encoding="utf8")as json_file:
             json.dump(data, json_file, indent=4, ensure_ascii=False)
+
+    @staticmethod
+    def update_matches(data):
+
+        path = "./data/matches.json"
+        with open(path, "w", encoding="utf8")as json_file:
+            json.dump(data, json_file, indent=4, ensure_ascii=False)

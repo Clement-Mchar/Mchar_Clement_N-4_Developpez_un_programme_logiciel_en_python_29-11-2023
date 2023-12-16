@@ -1,7 +1,8 @@
 class Match:
 
-    def __init__(self, id, name, player_1, player_2, result):
+    def __init__(self, id, round_id, name, player_1, player_2, result):
         self._id = id
+        self._round_id = round_id
         self._name = name
         self._player_1 = player_1
         self._player_2 = player_2
@@ -14,6 +15,14 @@ class Match:
     @id.setter
     def id(self, id):
         self._id = id
+
+    @property
+    def round_id(self):
+        return self._round_id
+
+    @round_id.setter
+    def round_id(self, round_id):
+        self._round_id = round_id
 
     @property
     def name(self):
@@ -50,6 +59,7 @@ class Match:
     def to_dict(self):
         return {
             "id": self.id,
+            "round_id": self.round_id,
             "name": self.name,
             "player_1": self.player_1,
             "player_2": self.player_2,

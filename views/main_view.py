@@ -11,6 +11,7 @@ class MenuView:
         cls.console.print("Veuillez sélectionner une option :")
         cls.console.print("1 : Créer un joueur")
         cls.console.print("2 : Créer un tournoi")
+        cls.console.print("3 : Afficher les rapports")
         try:
             choice = input()
             return int(choice)

@@ -1,6 +1,7 @@
 class Round:
-    def __init__(self, id, start_date, end_date, name, matches):
+    def __init__(self, id, tournament_id, start_date, end_date, name, matches):
         self._id = id
+        self._tournament_id = tournament_id
         self._matches = matches if matches else []
         self._name = name
         self._start_date = start_date
@@ -13,6 +14,14 @@ class Round:
     @id.setter
     def id(self, id):
         self._id = id
+
+    @property
+    def tournament_id(self):
+        return self._tournament_id
+
+    @tournament_id.setter
+    def round_id(self, tournament_id):
+        self._tournament_id = tournament_id
 
     @property
     def start_date(self):
@@ -49,6 +58,7 @@ class Round:
     def to_dict(self):
         return {
             "id": self.id,
+            "tournament_id": self.tournament_id,
             "start_date": str(self.start_date),
             "end_date": str(self.end_date),
             "name": self.name,

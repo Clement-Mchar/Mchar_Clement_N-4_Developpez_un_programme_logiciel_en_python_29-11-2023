@@ -1,5 +1,4 @@
-from rich.console import Console
-from rich.table import Table
+
 from models.data import DataManager
 from views.reports_view import ReportsView
 
@@ -13,6 +12,14 @@ class ReportController:
                 choice = ReportsView.display_reports_menu()
                 if choice == 1:
                     ReportController.players_report()
+                if choice == 2:
+                    ReportController.tournaments_report()
+                if choice == 3:
+                    ReportController.selected_tournament()
+                if choice == 4:
+                    ReportController.tournament_players()
+                if choice == 5:
+                    ReportController.tournament_matches_and_rounds()
 
             except ValueError as e:
                 print(f"Erreur {e}")
@@ -26,20 +33,27 @@ class ReportController:
                 x["first_name"].lower(), x["last_name"].lower()
             )
         )
+        ReportsView.display_players_report(sorted_players)
 
-        table = Table(show_header=True, header_style="cyan")
-        table.add_column("ID", style="white", justify="right")
-        table.add_column("Prénom", style="white")
-        table.add_column("Nom", style="white")
-        table.add_column("Date de naissance", style="white")
+    def tournaments_report():
+        tournaments_path = DataManager("./data/tournaments.json")
+        tournaments = tournaments_path.load_data_set()
 
-        for player in sorted_players:
-            table.add_row(
-                str(player["id"]),
-                player["first_name"],
-                player["last_name"],
-                player["birthdate"]
-            )
+        ReportsView.display_tournaments_report(tournaments)
 
-        console = Console()
-        console.print(table)
+    def selected_tournament():
+        tournaments_path = DataManager("./data/tournaments.json")
+        tournaments = tournaments_path.load_data_set()
+        ReportsView.display_selected_tournament(tournaments)
+
+    def tournament_players():
+        tournaments_path = DataManager("./data/tournaments.json")
+        tournaments = tournaments_path.load_data_set()
+        players_path = DataManager("./data/players.json")
+        players = players_path.load_data_set()
+        ReportsView.display_tournament_players(tournaments, players)
+
+
+        
+
+        

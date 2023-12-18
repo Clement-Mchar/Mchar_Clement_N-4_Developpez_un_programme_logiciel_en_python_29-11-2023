@@ -1,6 +1,7 @@
 import random
 from models.match import Match
 from views.round_view import RoundView
+from views.match_view import MatchView
 from models.data import DataManager
 
 
@@ -55,7 +56,7 @@ class MatchController:
     def handle_match_result(match):
 
         while True:
-            match_result = RoundView.enter_match_result(match)
+            match_result = MatchView.enter_match_result(match)
             player_1_result = match_result[0]
             player_2_result = match_result[1]
             player_1_result_float = float(player_1_result)

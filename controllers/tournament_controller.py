@@ -1,4 +1,5 @@
 import datetime
+
 from models.tournament import Tournament
 from models.data import DataManager
 from views.tournament_view import TournamentView
@@ -54,3 +55,12 @@ class TournamentController:
             tournaments[-1]["end_date"] = end_date
             print("Date de fin du round mise à jour.")
             DataManager.update_tournaments(tournaments)
+
+    def handle_tournament_ranking(registered_players):
+        players_list = sorted(
+                    registered_players,
+                    key=lambda x: (x[3]),
+                    reverse=True
+                )
+        TournamentView.display_tournament_ranking(players_list)
+

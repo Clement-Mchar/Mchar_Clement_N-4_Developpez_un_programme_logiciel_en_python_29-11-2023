@@ -13,7 +13,13 @@ class MatchController:
     def create_match(rounds, new_round, players_list):
 
         matches = []
-
+        last_match_id = 0
+        
+        if len(rounds) >= 2 and rounds[-2]["matches"]:
+            last_match_id = rounds[-2]["matches"][-1]
+        else:
+            last_match_id = 0
+        
         match_number = len(matches) + 1
 
         played_players = []
@@ -29,9 +35,7 @@ class MatchController:
                 random.shuffle(players_list)
                 player_1, player_2 = players_list[0], players_list[1]
 
-            match_id = MatchController.match_counter + 1
-
-            MatchController.match_counter += 1
+            match_id = last_match_id + match_number
 
             match = Match(
                 id=match_id,

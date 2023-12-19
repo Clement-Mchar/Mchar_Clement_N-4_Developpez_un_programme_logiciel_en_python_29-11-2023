@@ -29,6 +29,7 @@ class TournamentController:
                 rounds=[],
                 players=[],
                 notes=tournament_info[4],
+                is_over=False,
                 number_of_players=tournament_info[2],
                 number_of_rounds=tournament_info[3]
             )
@@ -53,7 +54,8 @@ class TournamentController:
         if len(tournament.rounds) == tournament.number_of_rounds:
             end_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
             tournaments[-1]["end_date"] = end_date
-            print("Date de fin du round mise à jour.")
+            print("Date de fin du tournoi mise à jour.")
+            tournaments[-1]["is_over"] = True
             DataManager.update_tournaments(tournaments)
 
     def handle_tournament_ranking(registered_players):

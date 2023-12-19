@@ -1,4 +1,5 @@
 from views.main_view import MenuView
+from models.data import DataManager
 
 
 class MainController:
@@ -12,16 +13,17 @@ class MainController:
         from controllers.reports_controller import ReportController
 
         while True:
-            try:
-                choice = MenuView.display_main_menu()
-                if choice == 1:
-                    PlayerController.create_player()
-                elif choice == 2:
-                    TournamentController.create_tournament()
-                elif choice == 3:
-                    ReportController.reports_menu()
-                else:
-                    print("Erreur : veuillez faire un choix valide.")
-                    MenuView.display_main_menu()
-            except ValueError as e:
-                print(f"Erreur {e}")
+                try:
+                    choice = MenuView.display_main_menu()
+                    if choice == 1:
+                        PlayerController.create_player()
+                    elif choice == 2:
+                        TournamentController.create_tournament()
+                    elif choice == 3:
+                        ReportController.reports_menu()
+                    else:
+                        print("Erreur : veuillez faire un choix valide.")
+                        MenuView.display_main_menu()
+                except ValueError as e:
+                    print(f"Erreur {e}")
+

@@ -19,7 +19,7 @@ class ReportController:
                 if choice == 4:
                     ReportController.tournament_players()
                 if choice == 5:
-                    ReportController.tournament_matches_and_rounds()
+                    ReportController.tournament_rounds_and_matches()
 
             except ValueError as e:
                 print(f"Erreur {e}")
@@ -53,7 +53,9 @@ class ReportController:
         players = players_path.load_data_set()
         ReportsView.display_tournament_players(tournaments, players)
 
-
-        
-
-        
+    def tournament_rounds_and_matches():
+        tournaments_path = DataManager("./data/tournaments.json")
+        tournaments = tournaments_path.load_data_set()
+        rounds_path = DataManager("./data/rounds.json")
+        rounds = rounds_path.load_data_set()
+        ReportsView.display_rounds_and_matches(tournaments, rounds)

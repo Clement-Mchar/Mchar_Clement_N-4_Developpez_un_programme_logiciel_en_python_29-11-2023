@@ -30,8 +30,9 @@ class TournamentView:
         return player_id
     
     @classmethod
-    def display_tournament_ranking(players_list):
+    def display_tournament_ranking(cls, players_list):
         
+        console = Console()
         console.print("Voici le classement du tournoi :")
         
         table = Table(show_header=True, header_style="cyan")
@@ -47,5 +48,5 @@ class TournamentView:
                 player[2],
                 str(player[3])
             )
-        console = Console()
+
         console.print(table)

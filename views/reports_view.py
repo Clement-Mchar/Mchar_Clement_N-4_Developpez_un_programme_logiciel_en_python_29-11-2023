@@ -124,7 +124,7 @@ class ReportsView:
         while True:
             choice = input(
                 "Veuillez entrer l'id du tournoi dont vous souhaitez "
-                "afficher la liste de joueurs:"
+                "afficher la liste de joueurs: "
             )
             try:
                 current_tournament = next(tournament for tournament in tournaments if tournament['id'] == int(choice))
@@ -153,3 +153,53 @@ class ReportsView:
                 break
             except StopIteration:
                 print("Aucun tournoi trouvé avec cet ID")
+
+    def display_rounds_and_matches(tournaments, rounds):
+        console = Console()
+        table = Table(show_header=True, header_style="cyan")
+        table.add_column("ID", style="white", justify="right")
+        table.add_column("Nom", style="white")
+        table.add_column("Lieu", style="white")
+        table.add_column("Rounds", style="white")
+
+        for tournament in tournaments:
+            rounds_str = ', '.join(map(str, tournament["rounds"]))
+            table.add_row(
+                str(tournament["id"]),
+                tournament["name"],
+                tournament["place"],
+                rounds_str
+            )
+        console.print(table)
+
+        while True:
+            choice = input(
+                "Veuillez entrer l'id du tournoi dont vous souhaitez "
+                "afficher la liste des rounds/matches: "
+            )
+            try:
+                current_tournament = next(tournament for tournament in tournaments if tournament['id'] == int(choice))
+
+                tournament_rounds_ids = current_tournament['rounds']
+                tournament_rounds = [new_round for new_round in rounds if new_round["id"] in tournament_rounds_ids]
+
+                if not tournament_rounds:
+                    raise StopIteration
+
+                new_table = Table(show_header=True, header_style="cyan")
+                new_table.add_column("ID", style="white", justify="right")
+                new_table.add_column("Nom", style="white")
+                new_table.add_column("Matches", style="white")
+
+                for round in tournament_rounds:
+                    matches_str = ', '.join(map(str, round["matches"]))
+                    new_table.add_row(
+                        str(round["id"]),
+                        round["name"],
+                        matches_str
+                    )
+
+                console.print(new_table)
+                break
+            except StopIteration:
+                print("Aucun round trouvé avec cet ID")

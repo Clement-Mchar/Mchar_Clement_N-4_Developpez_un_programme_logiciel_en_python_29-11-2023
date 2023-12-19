@@ -10,6 +10,7 @@ class Tournament:
                 rounds,
                 players,
                 notes,
+                is_over,
                 number_of_players,
                 number_of_rounds=4):
 
@@ -21,6 +22,7 @@ class Tournament:
         self._rounds = rounds
         self._players = players
         self._notes = notes
+        self._is_over = is_over
         self._number_of_players = number_of_players
         self._number_of_rounds = number_of_rounds
 
@@ -133,6 +135,14 @@ class Tournament:
     @notes.setter
     def notes(self, notes):
         self._notes = notes
+    
+    @property
+    def is_over(self):
+        return self._is_over
+
+    @is_over.setter
+    def score(self, is_over):
+        self._is_over = is_over
 
     def to_dict(self):
         return {
@@ -145,5 +155,6 @@ class Tournament:
             "number_of_rounds": int(self.number_of_rounds),
             "players": self.players,
             "rounds": self.rounds,
-            "notes": self.notes
+            "notes": self.notes,
+            "is_over":self.is_over
         }

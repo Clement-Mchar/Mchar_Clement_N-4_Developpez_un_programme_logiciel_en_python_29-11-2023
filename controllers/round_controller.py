@@ -9,7 +9,7 @@ from controllers.match_controller import MatchController
 class RoundController:
 
     @staticmethod
-    def create_round(tournaments, tournament, registered_players):
+    def create_round(tournaments, tournament, registered_players, players_scores):
         from controllers.tournament_controller import TournamentController
         
         while len(tournament.rounds) < tournament.number_of_rounds:
@@ -38,20 +38,22 @@ class RoundController:
             if round_number == 1:
                 players_list = sorted(
                     registered_players,
-                    key=lambda x: (x[2], x[1])
+                    key=lambda x: (x[1])
                 )
 
                 random.shuffle(players_list)
             else:
-                players_list = sorted(
-                    registered_players,
-                    key=lambda x: (x[3]),
+                sorted(
+                    players_scores,
+                    key=lambda x: (x[2]),
                     reverse=True
                 )
+                print(players_scores)
             MatchController.create_match(
                 rounds,
                 new_round,
                 players_list,
+                players_scores
             )
 
             number_of_matches = tournament.number_of_players / 2
@@ -63,4 +65,4 @@ class RoundController:
                 print(f"Date de fin du round : {end_date} .")
                 DataManager.update_rounds(rounds)
 
-        TournamentController.handle_tournament_ranking(registered_players)
+        TournamentController.handle_tournament_ranking(players_scores)

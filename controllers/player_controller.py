@@ -42,11 +42,13 @@ class PlayerController:
     ):
 
         registered_players = []
+        players_scores = []
         while len(tournament.players) < tournament.number_of_players:
             try:
                 players_list = DataManager("./data/players.json")
                 players = players_list.load_data_set()
                 existing_players = []
+                
                 for player in players:
 
                     existing_players.append(
@@ -66,20 +68,27 @@ class PlayerController:
                 )
                 if existing_player:
                     if int(player_id) not in tournament.players:
-                        player_instance = Player(
+                        new_player = Player(
                             id=int(player_id),
                             first_name=existing_player["first_name"],
                             last_name=existing_player["last_name"],
                             birthdate=existing_player["birthdate"]
                         )
-                        player_instance.score = 0
-                        tournament.players.append(player_instance.id)
+                        new_player.score = 0
+                        tournament.players.append(new_player.id)
+                        name = f"{new_player.first_name} {new_player._last_name}"
                         registered_players.append(
                             [
-                                player_instance.id,
-                                player_instance.first_name,
-                                player_instance.last_name,
-                                player_instance.score,
+                                new_player.id,
+                                name,
+                                new_player.score,
+                            ]
+                        )
+                        players_scores.append(
+                            [
+                                new_player.id,
+                                name,
+                                new_player.score,
                             ]
                         )
                         DataManager.update_tournaments(tournaments)
@@ -100,5 +109,6 @@ class PlayerController:
         RoundController.create_round(
             tournaments,
             tournament,
-            registered_players
+            registered_players,
+            players_scores
         )

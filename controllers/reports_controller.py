@@ -58,4 +58,6 @@ class ReportController:
         tournaments = tournaments_path.load_data_set()
         rounds_path = DataManager("./data/rounds.json")
         rounds = rounds_path.load_data_set()
-        ReportsView.display_rounds_and_matches(tournaments, rounds)
+        matches_path = DataManager("./data/matches.json")
+        matches = matches_path.load_data_set()
+        ReportsView.display_rounds_and_matches(tournaments, rounds, matches)

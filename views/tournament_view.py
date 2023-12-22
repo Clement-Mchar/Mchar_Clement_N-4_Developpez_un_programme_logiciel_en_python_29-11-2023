@@ -30,23 +30,21 @@ class TournamentView:
         return player_id
     
     @classmethod
-    def display_tournament_ranking(cls, players_list):
+    def display_tournament_ranking(cls, players_scores):
         
         console = Console()
         console.print("Voici le classement du tournoi :")
         
         table = Table(show_header=True, header_style="cyan")
         table.add_column("Place", style="white", justify="left")
-        table.add_column("Prénom", style="white")
         table.add_column("Nom", style="white")
         table.add_column("Score", style="white")
 
-        for rank, player in enumerate(players_list, start=1):
+        for rank, player in enumerate(players_scores, start=1):
             table.add_row(
                 str(rank),
                 player[1],
-                player[2],
-                str(player[3])
+                str(player[2])
             )
 
         console.print(table)

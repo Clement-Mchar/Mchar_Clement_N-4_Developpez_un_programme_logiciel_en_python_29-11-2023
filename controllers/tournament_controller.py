@@ -58,11 +58,11 @@ class TournamentController:
             tournaments[-1]["is_over"] = True
             DataManager.update_tournaments(tournaments)
 
-    def handle_tournament_ranking(registered_players):
-        players_list = sorted(
-                    registered_players,
-                    key=lambda x: (x[3]),
+    def handle_tournament_ranking(players_scores):
+        players_scores = sorted(
+                    players_scores,
+                    key=lambda x: (x[2]),
                     reverse=True
                 )
-        TournamentView.display_tournament_ranking(players_list)
+        TournamentView.display_tournament_ranking(players_scores)
 

@@ -10,23 +10,17 @@ class MatchController:
     match_counter = 0
 
     @staticmethod
-    def create_match(rounds, new_round, players_list):
-
-        matches = []
-        last_match_id = 0
-        
-        if len(rounds) >= 2 and rounds[-2]["matches"]:
-            last_match_id = rounds[-2]["matches"][-1]
-        else:
-            last_match_id = 0
-        
-        match_number = len(matches) + 1
-
+    def create_match(rounds, new_round, players_list, players_scores):
+        matches_path = DataManager("./data/matches.json")
+        matches = matches_path.load_data_set()
         played_players = []
+        round_matches = []
 
         match_players = zip(players_list[::2], players_list[1::2])
 
-        for match_number, (
+        match_id = len(matches) + 1
+
+        for match_id, (
             player_1,
             player_2
         ) in enumerate(match_players, start=1):
@@ -35,29 +29,45 @@ class MatchController:
                 random.shuffle(players_list)
                 player_1, player_2 = players_list[0], players_list[1]
 
-            match_id = last_match_id + match_number
 
             match = Match(
                 id=match_id,
                 round_id=new_round.id,
-                name=f"Match N.{match_number}",
+                name=f"Match N.{match_id}",
                 player_1=player_1,
                 player_2=player_2,
                 result=""
             )
 
             played_players.append((player_1[0], player_2[0]))
+            
+            round_matches.append(match)
 
-            new_round.matches.append(match.id)
-            matches.append(match)
+            DataManager.update_rounds(rounds)
+        MatchController.save_match_tuple(new_round, rounds, round_matches, matches_path, players_scores)
 
-        DataManager.update_rounds(rounds)
-        RoundView.display_round_view(new_round, matches)
-        for match in matches:
-            MatchController.handle_match_result(match)
+    def save_match_tuple(new_round, rounds, round_matches, matches_path, players_scores):
+        
+        RoundView.display_round_view(new_round, round_matches)
+        for match in round_matches:
+            MatchController.handle_match_result(match, players_scores)
+            match_tuple = (
+                [
+                    match.player_1[1],
+                    match.player_1[2]
+                ],
+                [
+                    match.player_2[1],
+                    match.player_2[2]
+                ]
+            )
+            matches_path.save_data(match.to_dict())
+            new_round.matches.append(match_tuple)
+            DataManager.update_rounds(rounds)
+        
 
     @staticmethod
-    def handle_match_result(match):
+    def handle_match_result(match, players_scores ):
 
         while True:
             match_result = MatchView.enter_match_result(match)
@@ -96,34 +106,25 @@ class MatchController:
                     raise ValueError("Score invalide, veuillez rééssayer.")
 
                 if player_1_result == 1:
-                    match.player_1[3] += 1
+                    match.player_1[2] = 1
+                    match.player_2[2] = 0
                 elif player_1_result == 0.5:
-                    match.player_1[3] += 0.5
-                    match.player_2[3] += 0.5
+                    match.player_1[2] = 0.5
+                    match.player_2[2] = 0.5
                 elif player_1_result == 0:
-                    match.player_2[3] += 1
+                    match.player_1[2] = 0
+                    match.player_2[2] = 1
+
+                for player in players_scores :
+                    if match.player_1[0] == player[0]:
+                        player[2] += match.player_1[2]
+                    elif match.player_2[0] == player[0]:
+                        player[2] += match.player_2[2]
+                
+                match.result = f"{match.player_1[2]}-{match.player_2[2]}"
 
                 break
 
             except ValueError as e:
                 print(f"Erreur: {e}")
                 print("Veuillez entrer un score valide (0, 0.5, ou 1).")
-        MatchController.save_match_tuple(match)
-
-    def save_match_tuple(match):
-        player_1_name = f"{match.player_1[1]} {match.player_1[2]}"
-        player_2_name = f"{match.player_2[1]} {match.player_2[2]}"
-        matches = DataManager("./data/matches.json")
-
-        match_tuple = (
-            {
-                "name": player_1_name,
-                "score": match.player_1[3]
-            },
-            {
-                "name": player_2_name,
-                "score": match.player_2[3]
-            }
-        )
-
-        matches.save_data(match_tuple)

@@ -3,6 +3,7 @@ from models.data import DataManager
 from views.reports_view import ReportsView
 
 
+
 class ReportController:
 
     @staticmethod
@@ -25,9 +26,8 @@ class ReportController:
                 print(f"Erreur {e}")
 
     @staticmethod
-    def players_report():
-        players_path = DataManager('./data/players.json')
-        players = players_path.load_data_set()
+    def players_report(program_state):
+        players = program_state.players
         sorted_players = sorted(
             players, key=lambda x: (
                 x["first_name"].lower(), x["last_name"].lower()
@@ -35,29 +35,22 @@ class ReportController:
         )
         ReportsView.display_players_report(sorted_players)
 
-    def tournaments_report():
-        tournaments_path = DataManager("./data/tournaments.json")
-        tournaments = tournaments_path.load_data_set()
+    def tournaments_report(program_state):
+        tournaments = program_state.tournaments
 
         ReportsView.display_tournaments_report(tournaments)
 
-    def selected_tournament():
-        tournaments_path = DataManager("./data/tournaments.json")
-        tournaments = tournaments_path.load_data_set()
+    def selected_tournament(program_state):
+        tournaments = program_state.tournaments
         ReportsView.display_selected_tournament(tournaments)
 
-    def tournament_players():
-        tournaments_path = DataManager("./data/tournaments.json")
-        tournaments = tournaments_path.load_data_set()
-        players_path = DataManager("./data/players.json")
-        players = players_path.load_data_set()
+    def tournament_players(program_state):
+        tournaments = program_state.tournaments
+        players = program_state.players
         ReportsView.display_tournament_players(tournaments, players)
 
-    def tournament_rounds_and_matches():
-        tournaments_path = DataManager("./data/tournaments.json")
-        tournaments = tournaments_path.load_data_set()
-        rounds_path = DataManager("./data/rounds.json")
-        rounds = rounds_path.load_data_set()
-        matches_path = DataManager("./data/matches.json")
-        matches = matches_path.load_data_set()
+    def tournament_rounds_and_matches(program_state):
+        tournaments = program_state.tournaments
+        rounds = program_state.rounds
+        matches = program_state.matches
         ReportsView.display_rounds_and_matches(tournaments, rounds, matches)

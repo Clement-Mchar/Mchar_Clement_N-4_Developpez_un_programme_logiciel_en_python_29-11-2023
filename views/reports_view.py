@@ -9,7 +9,6 @@ class ReportsView:
 
     @classmethod
     def display_reports_menu(cls):
-
         cls.console.print("Veuillez sélectionner le rapport à afficher :")
         cls.console.print("1: Afficher la liste des joueurs enregistrés")
         cls.console.print("2: Afficher la liste de tous les tournois")
@@ -31,7 +30,6 @@ class ReportsView:
             return cls.display_reports_menu()
 
     def display_players_report(sorted_players):
-
         table = Table(show_header=True, header_style="cyan")
         table.add_column("ID", style="white", justify="right")
         table.add_column("Prénom", style="white")
@@ -50,7 +48,6 @@ class ReportsView:
         console.print(table)
 
     def display_tournaments_report(program_state):
-
         tournaments = program_state.tournaments
         console = Console()
         table = Table(show_header=True, header_style="cyan")
@@ -84,7 +81,6 @@ class ReportsView:
         console.print(table)
 
     def display_selected_tournament(program_state):
-
         tournaments = program_state.tournaments
         console = Console()
         table = Table(show_header=True, header_style="cyan")
@@ -132,7 +128,6 @@ class ReportsView:
                 )
 
     def display_tournament_players(program_state):
-
         tournaments = program_state.tournaments
         players = program_state.players
         console = Console()

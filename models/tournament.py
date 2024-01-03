@@ -1,4 +1,5 @@
 class Tournament:
+    """Sets the model for the tournament object's creation"""
 
     def __init__(
                 self,

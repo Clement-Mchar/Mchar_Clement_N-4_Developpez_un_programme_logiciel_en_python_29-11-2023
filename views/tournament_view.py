@@ -3,10 +3,10 @@ from rich.table import Table
 
 
 class TournamentView:
+    """Displays tournament view"""
 
     @classmethod
     def display_tournament_creation(cls):
-
         console = Console()
         while True:
             try:
@@ -33,7 +33,6 @@ class TournamentView:
 
     @classmethod
     def display_players_registration(cls, existing_players):
-
         console = Console()
         console.print(existing_players)
 
@@ -48,7 +47,6 @@ class TournamentView:
 
     @classmethod
     def display_tournament_ranking(cls, program_state):
-
         ranking = program_state.current_tournament['ranking']
         console = Console()
         console.print("Voici le classement du tournoi :")

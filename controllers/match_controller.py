@@ -5,10 +5,11 @@ from views.match_view import MatchView
 
 
 class MatchController:
+    """Create all the round's matches."""
 
     @staticmethod
     def create_match(program_state):
-
+        """Create a match and saves it to the matches.json file"""
         players_list = program_state.registered_players
         played_players = program_state.played_players
         rounds = program_state.rounds
@@ -53,7 +54,7 @@ class MatchController:
         MatchController.save_match(program_state)
 
     def save_match(program_state):
-
+        """Saves the match in the round's matches list"""
         rounds = program_state.rounds
         new_round = program_state.current_round
         round_matches = program_state.round_matches
@@ -79,7 +80,8 @@ class MatchController:
 
     @staticmethod
     def handle_match_result(program_state):
-
+        """Adds players's scores to their total score
+        Updates tournament's ranking"""
         match = program_state.current_match
         ranking = program_state.current_tournament['ranking']
 
@@ -94,7 +96,6 @@ class MatchController:
             both_results = [player_1_result_float, player_2_result_float]
 
             try:
-
                 if not all(
                     result in only_results for result in both_results
                 ):
@@ -163,7 +164,6 @@ class MatchController:
 
                 DataManager.update_matches(matches)
                 break
-
             except ValueError as e:
                 print(f"Erreur: {e}")
                 print("Veuillez entrer un score valide (0, 0.5, ou 1).")

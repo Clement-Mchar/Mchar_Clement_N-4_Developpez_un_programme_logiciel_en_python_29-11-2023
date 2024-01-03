@@ -2,6 +2,7 @@ from rich.console import Console
 
 
 class RoundView:
+    """Displays round view"""
 
     @classmethod
     def display_round_view(cls, program_state):

@@ -2,7 +2,7 @@ from rich.console import Console
 
 
 class MenuView:
-    """Display the main menu"""
+    """Displays the main menu"""
 
     console = Console()
 

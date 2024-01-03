@@ -3,9 +3,11 @@ from views.reports_view import ReportsView
 
 
 class ReportController:
+    """Handles reports display"""
 
     @staticmethod
     def reports_menu(program_state):
+        """Handles reports menu"""
         while True:
             try:
                 choice = ReportsView.display_reports_menu()

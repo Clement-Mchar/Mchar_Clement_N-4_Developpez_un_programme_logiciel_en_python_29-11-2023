@@ -1,4 +1,5 @@
 class Match:
+    """Sets the model for the match object's creation"""
 
     def __init__(self, id, round_id, name, player_1, player_2, result):
         self._id = id

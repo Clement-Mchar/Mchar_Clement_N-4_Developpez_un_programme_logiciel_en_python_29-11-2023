@@ -2,6 +2,7 @@ from rich.console import Console
 
 
 class MatchView:
+    """Displays the match view"""
 
     @classmethod
     def enter_match_result(cls, program_state):

@@ -8,13 +8,15 @@ from controllers.round_controller import RoundController
 
 
 class PlayerController:
-
     """Handles players creation"""
+
     @staticmethod
     def create_player(program_state):
-
+        """Creates a player
+        Saves its data to the players.json file"""
         player_infos = PlayerView.display_player_creation()
         players = program_state.players
+
         try:
             player = Player(
                 id=len(players) + 1,
@@ -31,26 +33,25 @@ class PlayerController:
             print(f"Erreur: {e}")
             PlayerView.display_player_creation()
 
-    """Handles players registering to the tournament"""
     @staticmethod
-    def register_a_player(
-        program_state
-    ):
+    def register_a_player(program_state):
+        """Adds a player to the current tournament"""
         tournaments = program_state.tournaments
         tournament = program_state.current_tournament
         registered_players = program_state.registered_players
         ranking = tournament['ranking']
+
         while len(tournament['players']) < tournament['number_of_players']:
             try:
                 players = program_state.players
                 existing_players = []
-
                 for player in players:
 
                     existing_players.append(
                         f"{player['id']}: {player['first_name']} "
                         f"{player['last_name']}"
                     )
+
                 player_id = TournamentView.display_players_registration(
                     existing_players
                 )
@@ -62,6 +63,7 @@ class PlayerController:
                     ),
                     None
                 )
+
                 if existing_player:
                     if int(player_id) not in tournament['players']:
                         new_player = Player(

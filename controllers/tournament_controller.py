@@ -6,10 +6,11 @@ from controllers.player_controller import PlayerController
 
 
 class TournamentController:
-
     """Handles tournament creation"""
+
     @staticmethod
     def create_tournament(program_state):
+        """Create and save a tournament to the tournaments.json file"""
         tournaments_path = DataManager("./data/tournaments.json")
         tournaments = program_state.tournaments
         tournament_info = TournamentView.display_tournament_creation()
@@ -51,12 +52,13 @@ class TournamentController:
         PlayerController.register_a_player(program_state)
 
     def handle_tournament_ranking(program_state):
-
         TournamentView.display_tournament_ranking(program_state)
         TournamentController.end_tournament(program_state)
 
     def end_tournament(program_state):
-
+        """Sets tournament's end date.
+        Clears registered players, rounds and matches lists
+        Marks current tournament as over"""
         tournaments = program_state.tournaments
         tournament = program_state.current_tournament
         if len(tournament['rounds']) == tournament['number_of_rounds']:

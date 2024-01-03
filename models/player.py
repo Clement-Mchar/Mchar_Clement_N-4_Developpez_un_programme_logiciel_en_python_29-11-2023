@@ -2,6 +2,7 @@ import datetime
 
 
 class Player:
+    """Sets the model for the player object's creation"""
 
     def __init__(
         self,

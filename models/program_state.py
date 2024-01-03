@@ -2,6 +2,7 @@ from models.data import DataManager
 
 
 class ProgramState:
+    """Saves and loads program's current state"""
 
     def __init__(self):
         self.tournaments = []

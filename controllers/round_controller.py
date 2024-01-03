@@ -6,9 +6,11 @@ from controllers.match_controller import MatchController
 
 
 class RoundController:
+    """Handles round creation's logic."""
 
     @staticmethod
     def create_round(program_state):
+        """Creates and saves a round to the rounds.json file"""
         tournaments = program_state.tournaments
         tournament = program_state.current_tournament
         registered_players = program_state.registered_players

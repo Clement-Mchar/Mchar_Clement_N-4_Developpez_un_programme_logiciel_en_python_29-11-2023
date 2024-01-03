@@ -3,6 +3,8 @@ import os
 
 
 class DataManager:
+    """Handles data's paths
+    Used to load and save program's data"""
 
     def __init__(self, path):
         self.path = path
@@ -26,35 +28,28 @@ class DataManager:
 
     @staticmethod
     def load_program_state():
-
         state_path = DataManager("./data/program_state.json")
-
         state_path.load_data_set()
 
     @staticmethod
     def save_program_state():
-
         state_path = DataManager("./data/program_state.json")
-
         state_path.save_data()
 
     @staticmethod
     def update_tournaments(data):
-
         path = "./data/tournaments.json"
         with open(path, "w", encoding="utf8")as json_file:
             json.dump(data, json_file, indent=4, ensure_ascii=False)
 
     @staticmethod
     def update_rounds(data):
-
         path = "./data/rounds.json"
         with open(path, "w", encoding="utf8")as json_file:
             json.dump(data, json_file, indent=4, ensure_ascii=False)
 
     @staticmethod
     def update_matches(data):
-
         path = "./data/matches.json"
         with open(path, "w", encoding="utf8")as json_file:
             json.dump(data, json_file, indent=4, ensure_ascii=False)

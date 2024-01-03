@@ -1,4 +1,5 @@
 class PlayerView:
+    """Displays player view"""
 
     @classmethod
     def display_player_creation(cls):

@@ -1,1 +1,1 @@
-"""initiate the controllers"""
+"""initiate controllers"""

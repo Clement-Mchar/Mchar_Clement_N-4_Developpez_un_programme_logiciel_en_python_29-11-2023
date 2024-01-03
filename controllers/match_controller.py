@@ -1,76 +1,91 @@
-import random
 from models.match import Match
+from models.data import DataManager
 from views.round_view import RoundView
 from views.match_view import MatchView
-from models.data import DataManager
 
 
 class MatchController:
 
-    match_counter = 0
-
     @staticmethod
-    def create_match(rounds, new_round, players_list, players_scores):
+    def create_match(program_state):
+
+        players_list = program_state.registered_players
+        played_players = program_state.played_players
+        rounds = program_state.rounds
+        round_matches = program_state.round_matches
+        current_round = program_state.current_round
+        matches = program_state.matches
         matches_path = DataManager("./data/matches.json")
-        matches = matches_path.load_data_set()
-        played_players = []
-        round_matches = []
 
         match_players = zip(players_list[::2], players_list[1::2])
 
-        match_id = len(matches) + 1
+        available_matches = [
+            (p1, p2) for p1 in players_list
+            for p2 in players_list if p1 != p2
+            and ((p1[0], p2[0]), (p2[0], p1[0]))
+            not in played_players
+        ]
 
-        for match_id, (
-            player_1,
-            player_2
-        ) in enumerate(match_players, start=1):
+        for match_id, (player_1, player_2) in enumerate(
+            match_players, start=1
+        ):
 
-            while (player_1[0], player_2[0]) in played_players:
-                random.shuffle(players_list)
-                player_1, player_2 = players_list[0], players_list[1]
-
-
+            if not available_matches:
+                break
+            match_id = len(matches) + 1
+            match_number = len(program_state.round_matches) + 1
             match = Match(
                 id=match_id,
-                round_id=new_round.id,
-                name=f"Match N.{match_id}",
+                round_id=current_round["id"],
+                name=f"Match N.{match_number}",
                 player_1=player_1,
                 player_2=player_2,
-                result=""
+                result=None
             )
 
             played_players.append((player_1[0], player_2[0]))
-            
-            round_matches.append(match)
-
+            matches.append(match.to_dict())
+            matches_path.save_data(match.to_dict())
+            round_matches.append(match.to_dict())
             DataManager.update_rounds(rounds)
-        MatchController.save_match_tuple(new_round, rounds, round_matches, matches_path, players_scores)
 
-    def save_match_tuple(new_round, rounds, round_matches, matches_path, players_scores):
-        
-        RoundView.display_round_view(new_round, round_matches)
+        RoundView.display_round_view(program_state)
+        MatchController.save_match(program_state)
+
+    def save_match(program_state):
+
+        rounds = program_state.rounds
+        new_round = program_state.current_round
+        round_matches = program_state.round_matches
+        match = next(match for match in round_matches)
         for match in round_matches:
-            MatchController.handle_match_result(match, players_scores)
+            program_state.current_match = match
+            MatchController.handle_match_result(program_state)
             match_tuple = (
                 [
-                    match.player_1[1],
-                    match.player_1[2]
+                    match['player_1'][1],
+                    match['player_1'][2]
                 ],
                 [
-                    match.player_2[1],
-                    match.player_2[2]
+                    match['player_2'][1],
+                    match['player_2'][2]
                 ]
             )
-            matches_path.save_data(match.to_dict())
-            new_round.matches.append(match_tuple)
+
+            new_round['matches'].append(match_tuple)
             DataManager.update_rounds(rounds)
-        
+        round_matches = []
+        program_state.round_matches = round_matches
 
     @staticmethod
-    def handle_match_result(match, players_scores ):
+    def handle_match_result(program_state):
+
+        match = program_state.current_match
+        ranking = program_state.current_tournament['ranking']
 
         while True:
-            match_result = MatchView.enter_match_result(match)
+            tournaments = program_state.tournaments
+            match_result = MatchView.enter_match_result(program_state)
             player_1_result = match_result[0]
             player_2_result = match_result[1]
             player_1_result_float = float(player_1_result)
@@ -106,23 +121,47 @@ class MatchController:
                     raise ValueError("Score invalide, veuillez rééssayer.")
 
                 if player_1_result == 1:
-                    match.player_1[2] = 1
-                    match.player_2[2] = 0
+                    match['player_1'][2] = 1
+                    match['player_2'][2] = 0
                 elif player_1_result == 0.5:
-                    match.player_1[2] = 0.5
-                    match.player_2[2] = 0.5
+                    match['player_1'][2] = 0.5
+                    match['player_2'][2] = 0.5
                 elif player_1_result == 0:
-                    match.player_1[2] = 0
-                    match.player_2[2] = 1
+                    match['player_1'][2] = 0
+                    match['player_2'][2] = 1
 
-                for player in players_scores :
-                    if match.player_1[0] == player[0]:
-                        player[2] += match.player_1[2]
-                    elif match.player_2[0] == player[0]:
-                        player[2] += match.player_2[2]
-                
-                match.result = f"{match.player_1[2]}-{match.player_2[2]}"
+                for player in ranking:
+                    if match['player_1'][0] == player[0]:
+                        player[2] += match['player_1'][2]
+                    elif match['player_2'][0] == player[0]:
+                        player[2] += match['player_2'][2]
 
+                matches = program_state.matches
+                written_match = next(
+                    written_match for written_match in matches
+                    if written_match["id"] == match["id"]
+                )
+
+                match['result'] = (
+                    f"{match['player_1'][2]}-"
+                    f"{match['player_2'][2]}"
+                )
+
+                written_match['result'] = (
+                    f"{match['player_1'][2]}-"
+                    f"{match['player_2'][2]}"
+                )
+
+                ranking = sorted(
+                    ranking,
+                    key=lambda x: (x[2]),
+                    reverse=True
+                )
+
+                program_state.current_tournament['ranking'] = ranking
+                DataManager.update_tournaments(tournaments)
+
+                DataManager.update_matches(matches)
                 break
 
             except ValueError as e:

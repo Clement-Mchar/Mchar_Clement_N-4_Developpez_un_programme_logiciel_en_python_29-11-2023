@@ -1,21 +1,19 @@
 import datetime
-
 from models.tournament import Tournament
 from models.data import DataManager
 from views.tournament_view import TournamentView
-from controllers.main_controller import MainController
 from controllers.player_controller import PlayerController
 
 
 class TournamentController:
 
     """Handles tournament creation"""
-
     @staticmethod
-    def create_tournament():
+    def create_tournament(program_state):
         tournaments_path = DataManager("./data/tournaments.json")
-        tournaments = tournaments_path.load_data_set()
+        tournaments = program_state.tournaments
         tournament_info = TournamentView.display_tournament_creation()
+        program_state.played_players = []
 
         try:
             tournament_id = len(tournaments) + 1
@@ -29,6 +27,7 @@ class TournamentController:
                 rounds=[],
                 players=[],
                 notes=tournament_info[4],
+                ranking=[],
                 is_over=False,
                 number_of_players=tournament_info[2],
                 number_of_rounds=tournament_info[3]
@@ -45,24 +44,27 @@ class TournamentController:
 
             tournaments.append(tournament.to_dict())
             tournaments_path.save_data(tournament.to_dict())
-
+            program_state.current_tournament = tournaments[-1]
         except ValueError as e:
             print(f"Erreur {e}")
-            MainController.menu_controller()
-        PlayerController.register_a_player(tournaments, tournament)
+            TournamentView.display_tournament_creation()
+        PlayerController.register_a_player(program_state)
 
-        if len(tournament.rounds) == tournament.number_of_rounds:
+    def handle_tournament_ranking(program_state):
+
+        TournamentView.display_tournament_ranking(program_state)
+        TournamentController.end_tournament(program_state)
+
+    def end_tournament(program_state):
+
+        tournaments = program_state.tournaments
+        tournament = program_state.current_tournament
+        if len(tournament['rounds']) == tournament['number_of_rounds']:
             end_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
             tournaments[-1]["end_date"] = end_date
             print("Date de fin du tournoi mise à jour.")
             tournaments[-1]["is_over"] = True
             DataManager.update_tournaments(tournaments)
-
-    def handle_tournament_ranking(players_scores):
-        players_scores = sorted(
-                    players_scores,
-                    key=lambda x: (x[2]),
-                    reverse=True
-                )
-        TournamentView.display_tournament_ranking(players_scores)
-
+        program_state.registered_players = []
+        program_state.round_matches = []
+        program_state.tournament_rounds = []

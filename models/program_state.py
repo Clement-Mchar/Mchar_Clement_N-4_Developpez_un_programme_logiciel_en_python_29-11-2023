@@ -1,5 +1,6 @@
 from models.data import DataManager
 
+
 class ProgramState:
 
     def __init__(self):

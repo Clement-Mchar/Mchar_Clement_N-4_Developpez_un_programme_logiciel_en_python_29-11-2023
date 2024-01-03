@@ -10,6 +10,7 @@ class Tournament:
                 rounds,
                 players,
                 notes,
+                ranking,
                 is_over,
                 number_of_players,
                 number_of_rounds=4):
@@ -22,6 +23,7 @@ class Tournament:
         self._rounds = rounds
         self._players = players
         self._notes = notes
+        self._ranking = ranking
         self._is_over = is_over
         self._number_of_players = number_of_players
         self._number_of_rounds = number_of_rounds
@@ -90,8 +92,8 @@ class Tournament:
     def _validate_number_of_players(cls, number_of_players):
         if not isinstance(number_of_players, int):
             raise ValueError("Le nombre de rounds doit être un entier.")
-        if not (2 <= number_of_players <= 64):
-            raise ValueError("Minimum 2 joueurs, maximum 10 joueurs.")
+        if not (2 <= number_of_players <= 16):
+            raise ValueError("Minimum 2 joueurs, maximum 16 joueurs.")
         if not (number_of_players % 2 == 0):
             raise ValueError("Le nombre de joueurs doit être pair !")
 
@@ -135,7 +137,15 @@ class Tournament:
     @notes.setter
     def notes(self, notes):
         self._notes = notes
-    
+
+    @property
+    def ranking(self):
+        return self._ranking
+
+    @ranking.setter
+    def ranking(self, ranking):
+        self._ranking = ranking
+
     @property
     def is_over(self):
         return self._is_over
@@ -156,5 +166,6 @@ class Tournament:
             "players": self.players,
             "rounds": self.rounds,
             "notes": self.notes,
-            "is_over":self.is_over
+            "ranking": self.ranking,
+            "is_over": self.is_over
         }

@@ -1,11 +1,11 @@
 from views.main_view import MenuView
-from models.data import DataManager
-
 
 
 class MainController:
+
     """Handles the menu
     Triggers all the other controllers"""
+
     program_state = None
 
     @staticmethod
@@ -19,7 +19,8 @@ class MainController:
         from controllers.reports_controller import ReportController
 
         while True:
-            if program_state.tournaments and program_state.tournaments[-1].get('is_over', True) is False:
+            tournaments = program_state.tournaments
+            if tournaments and tournaments[-1].get('is_over', True) is False:
                 MainController.load_program_state(program_state)
             try:
                 choice = MenuView.display_main_menu()
@@ -28,7 +29,7 @@ class MainController:
                 elif choice == 2:
                     TournamentController.create_tournament(program_state)
                 elif choice == 3:
-                    ReportController.reports_menu()
+                    ReportController.reports_menu(program_state)
                 else:
                     print("Erreur : veuillez faire un choix valide.")
                     MenuView.display_main_menu()
@@ -36,6 +37,7 @@ class MainController:
                 print(f"Erreur {e}")
 
     def load_program_state(program_state):
+
         from controllers.player_controller import PlayerController
         from controllers.round_controller import RoundController
         from controllers.match_controller import MatchController
@@ -44,44 +46,52 @@ class MainController:
         tournament = program_state.current_tournament
         rounds = program_state.rounds
         program_state.current_round = rounds[-1]
-        new_round = program_state.current_round
-
 
         while len(tournament['players']) < tournament['number_of_players']:
             MainController.load_registered_players(program_state)
             PlayerController.register_a_player(program_state)
+
         if len(tournament['rounds']) <= tournament['number_of_rounds']:
             if rounds:
                 program_state.current_round = rounds[-1]
                 MainController.load_registered_players(program_state)
                 MainController.load_rounds(program_state)
                 MainController.load_matches(program_state)
+                round_matches = program_state.round_matches
+
+                if round_matches:
+                    for match in round_matches:
+                        if match["result"] is None:
+                            print(match)
+                            program_state.current_match = match
+                            MatchController.handle_match_result(program_state)
                 RoundController.create_round(program_state)
             else:
                 MainController.load_registered_players(program_state)
                 RoundController.create_round(program_state)
 
     def load_registered_players(program_state):
+
         tournament = program_state.tournaments[-1]
         players = program_state.players
         registered_players = program_state.registered_players
-        for registered_player in tournament['players']:
-            registered_player = next(
+        for new_player in tournament['players']:
+            new_player = next(
                 player for player in players
-                if player['id'] == registered_player
+                if player['id'] == new_player
             )
-            name = f"{registered_player["first_name"]} {registered_player["last_name"]}"
+            name = f"{new_player["first_name"]} {new_player["last_name"]}"
             score = 0
             registered_players.append(
                 [
-                    registered_player["id"],
+                    new_player["id"],
                     name,
                     score,
                 ]
             )
 
     def load_rounds(program_state):
-        
+
         tournament = program_state.tournaments[-1]
         rounds = program_state.rounds
         tournament_rounds = program_state.tournament_rounds
@@ -94,23 +104,10 @@ class MainController:
             program_state.current_round = tournament_round
 
     def load_matches(program_state):
-        from controllers.match_controller import MatchController
+
         matches = program_state.matches
         round_matches = program_state.round_matches
         tournament_round = program_state.current_round
         for match in matches:
             if match['round_id'] == tournament_round["id"]:
                 round_matches.append(match)
-            for match in round_matches:
-                if not round_matches[0]['result']:
-                    program_state.current_match = round_matches[0]
-        MatchController.save_match(program_state)
-        
-        
-
-
-
-
-
-                
-    

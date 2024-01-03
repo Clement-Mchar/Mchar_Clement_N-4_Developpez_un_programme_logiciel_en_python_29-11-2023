@@ -11,12 +11,10 @@ class PlayerController:
 
     """Handles players creation"""
     @staticmethod
-    def create_player():
+    def create_player(program_state):
 
         player_infos = PlayerView.display_player_creation()
-        players_infos = DataManager(path="./data/players.json")
-        players = players_infos.load_data_set()
-
+        players = program_state.players
         try:
             player = Player(
                 id=len(players) + 1,
@@ -29,26 +27,24 @@ class PlayerController:
             player._validate_birthdate(date_str=player_infos[2])
             save_player = DataManager(path="./data/players.json")
             save_player.save_data(player.to_dict())
-
         except ValueError as e:
             print(f"Erreur: {e}")
-            MainController.menu_controller()
+            PlayerView.display_player_creation()
 
     """Handles players registering to the tournament"""
     @staticmethod
     def register_a_player(
-        tournaments,
-        tournament
+        program_state
     ):
-
-        registered_players = []
-        players_scores = []
-        while len(tournament.players) < tournament.number_of_players:
+        tournaments = program_state.tournaments
+        tournament = program_state.current_tournament
+        registered_players = program_state.registered_players
+        ranking = tournament['ranking']
+        while len(tournament['players']) < tournament['number_of_players']:
             try:
-                players_list = DataManager("./data/players.json")
-                players = players_list.load_data_set()
+                players = program_state.players
                 existing_players = []
-                
+
                 for player in players:
 
                     existing_players.append(
@@ -67,7 +63,7 @@ class PlayerController:
                     None
                 )
                 if existing_player:
-                    if int(player_id) not in tournament.players:
+                    if int(player_id) not in tournament['players']:
                         new_player = Player(
                             id=int(player_id),
                             first_name=existing_player["first_name"],
@@ -75,8 +71,12 @@ class PlayerController:
                             birthdate=existing_player["birthdate"]
                         )
                         new_player.score = 0
-                        tournament.players.append(new_player.id)
-                        name = f"{new_player.first_name} {new_player._last_name}"
+                        tournament['players'].append(new_player.id)
+                        name = (
+                            f"{new_player.first_name} "
+                            f"{new_player._last_name}"
+                        )
+
                         registered_players.append(
                             [
                                 new_player.id,
@@ -84,7 +84,7 @@ class PlayerController:
                                 new_player.score,
                             ]
                         )
-                        players_scores.append(
+                        ranking.append(
                             [
                                 new_player.id,
                                 name,
@@ -105,10 +105,5 @@ class PlayerController:
                         MenuView.display_main_menu()
             except ValueError as e:
                 print(f"Erreur: {e}")
-                MainController.menu_controller()
-        RoundController.create_round(
-            tournaments,
-            tournament,
-            registered_players,
-            players_scores
-        )
+                MainController.menu_controller(program_state)
+        RoundController.create_round(program_state)

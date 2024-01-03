@@ -1,6 +1,5 @@
 import random
 import datetime
-
 from models.data import DataManager
 from models.round import Round
 from controllers.match_controller import MatchController
@@ -9,29 +8,36 @@ from controllers.match_controller import MatchController
 class RoundController:
 
     @staticmethod
-    def create_round(tournaments, tournament, registered_players, players_scores):
+    def create_round(program_state):
+        tournaments = program_state.tournaments
+        tournament = program_state.current_tournament
+        registered_players = program_state.registered_players
+        rounds = program_state.rounds
+        program_state.tournament_rounds = []
+        tournament_rounds = program_state.tournament_rounds
+        program_state.round_matches = []
+
         from controllers.tournament_controller import TournamentController
-        
-        while len(tournament.rounds) < tournament.number_of_rounds:
+
+        while len(tournament['rounds']) < tournament['number_of_rounds']:
 
             rounds_path = DataManager("./data/rounds.json")
-            rounds = rounds_path.load_data_set()
-
-            round_number = len(tournament.rounds) + 1
+            round_number = len(tournament['rounds']) + 1
             start_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
 
             new_round = Round(
                 id=len(rounds) + 1,
-                tournament_id=tournament.id,
+                tournament_id=tournament['id'],
                 start_date=start_date,
                 end_date="",
                 name=f"Round {round_number}",
                 matches=[]
             )
 
-            tournament.rounds.append(new_round.id)
-            rounds.append(new_round.to_dict())
+            tournament['rounds'].append(round_number)
+            tournament_rounds.append(new_round.to_dict())
 
+            rounds.append(new_round.to_dict())
             rounds_path.save_data(new_round.to_dict())
             DataManager.update_tournaments(tournaments)
 
@@ -42,27 +48,27 @@ class RoundController:
                 )
 
                 random.shuffle(players_list)
+                program_state.registered_players = players_list
             else:
-                sorted(
-                    players_scores,
+                players_list = sorted(
+                    registered_players,
                     key=lambda x: (x[2]),
                     reverse=True
                 )
-                print(players_scores)
+
+                program_state.registered_players = players_list
+
+            program_state.current_round = rounds[-1]
             MatchController.create_match(
-                rounds,
-                new_round,
-                players_list,
-                players_scores
+                program_state
             )
 
-            number_of_matches = tournament.number_of_players / 2
+            number_of_matches = tournament['number_of_players'] / 2
 
             if len(new_round.matches) == number_of_matches:
-
                 end_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
                 rounds[-1]["end_date"] = end_date
                 print(f"Date de fin du round : {end_date} .")
                 DataManager.update_rounds(rounds)
 
-        TournamentController.handle_tournament_ranking(players_scores)
+        TournamentController.handle_tournament_ranking(program_state)

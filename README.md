@@ -35,3 +35,5 @@ Il permet de créer des joueurs et des tournois, d'afficher des rapports de donn
 ## Utilisation
 
 1. Dans le terminal de commande, entrez 'python main.py" (sans les guillemets).
+2. Naviguez dans les différents menus via la console.
+3. Saisissez les données requises au format demandé.

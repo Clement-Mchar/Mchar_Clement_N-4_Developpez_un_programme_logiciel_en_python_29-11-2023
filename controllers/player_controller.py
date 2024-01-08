@@ -1,9 +1,9 @@
-from views.player_view import PlayerView
 from models.player import Player
 from models.data import DataManager
-from controllers.main_controller import MainController
+from views.player_view import PlayerView
 from views.tournament_view import TournamentView
 from views.main_view import MenuView
+from controllers.main_controller import MainController
 from controllers.round_controller import RoundController
 
 
